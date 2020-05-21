@@ -13,7 +13,16 @@ async function init () {
         method: 'GET',
         path: '/',
         handler: (req, h) => {
-            return 'Hapi to return something!';
+            return h.response('Hapi to return something!')
+                    .code(200);
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/i-want-to-see-madonna-live',
+        handler: (req, h) => {
+            return h.redirect('https://www.youtube.com/watch?v=Z26VOATBwhM')
         }
     });
 
