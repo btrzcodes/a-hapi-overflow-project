@@ -1,6 +1,8 @@
 'use strict'
 const config = require('./config');
 const Hapi = require('hapi');
+const handlebars = require('handlebars');
+const vision = require('vision');
 const inert = require('inert'); // serves static files
 const path = require('path');
 
@@ -18,12 +20,26 @@ async function init () {
     try {
         // Happi needs to initialize plugins before server starts
         await server.register(inert);
+        await server.register(vision); // to serve dynamic front
+        //await server.register(handlebars); // No need to register this. Engine to make dynamic front templates
+        
+        server.views({
+            engines: {
+                hbs: handlebars
+            },
+            relativeTo: __dirname, // so that views are apart from public folder
+            path: 'views',
+            layout: true, // avoids html piece repetitions
+            layoutPath: 'views'
+        })
         // next two routes are related to inert: sets index, and serves all public folder statics so that getting the front.
         server.route({
             method: 'GET',
             path: '/home',
             handler: (req, h) => {
-                return h.file('index.html');
+                return h.view('index',{
+                    title: 'home'
+                })
             }
         });
 
