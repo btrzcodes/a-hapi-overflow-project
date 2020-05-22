@@ -9,6 +9,7 @@ module.exports = [
         path: '/',
         handler: site.home
     },
+    // REGISTRATION
     {
         method: 'GET',
         path: '/register',
@@ -29,7 +30,27 @@ module.exports = [
         },
         path: '/create-user',
         handler: user.createUser
-    },   
+    },  
+    // LOGIN
+    {
+        method: 'GET',
+        path: '/login',
+        handler: site.login
+    },
+    {
+        method: 'POST',
+        options: {
+            validate : {
+                payload: {
+                    email: Joi.string().email().required(),
+                    password: Joi.string().required().min(6),
+                }
+            }
+        },
+        path: '/validate-user',
+        handler: user.validateUser
+    }, 
+
     { // special secret route:
         method: 'GET',
         path: '/i-want-to-see-madonna-live',

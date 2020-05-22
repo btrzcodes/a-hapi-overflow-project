@@ -20,6 +20,26 @@ class Users {
         return newUser.key;
     }
 
+    async validateUser (data) {
+        const userMailQuery = await this.collection
+                                        .orderByChild('email')
+                                        .equalTo(data.email)
+                                        .once('value') // TODO whant is this once() ?
+        console.log(userMailQuery); // TODO, CHECK WHAT FIREBASE RETURNS
+        const user = userMailQuery.val() // Firebase returns X, we set it as an object then
+        console.log(user); // TODO compare this with query
+
+        if(user){
+            const userId = Object.keys(user)[0];
+            const validatePassword = await bcrypt
+                                                .compare(data.password, user[userId].password);
+            return validatePassword ?
+                userId
+                : false
+        }
+
+    }
+
     static async encrypt (password) { // static method: cant be called trhough a class instance. Has no acces to data stored in specific objects
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
