@@ -35,10 +35,10 @@ async function init () {
         // next two routes are related to inert: sets index, and serves all public folder statics so that getting the front.
         server.route({
             method: 'GET',
-            path: '/home',
+            path: '/',
             handler: (req, h) => {
                 return h.view('index',{
-                    title: 'home'
+                    title: 'Home'
                 })
             }
         });
@@ -53,7 +53,24 @@ async function init () {
                 }
             }
         });
-    
+        // Registration
+        server.route({
+            method: 'GET',
+            path: '/register',
+            handler: (req, h) => {
+                return h.view('register',{
+                    title: 'Register'
+                })
+            }
+        });
+        server.route({
+            method: 'POST',
+            path: '/create-user',
+            handler: (req, h) => {
+                console.log(req.payload)
+                return 'User created!'
+            }
+        });   
         server.route({
             method: 'GET',
             path: '/i-want-to-see-madonna-live',
