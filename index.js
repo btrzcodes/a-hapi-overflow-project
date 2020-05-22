@@ -5,6 +5,7 @@ const handlebars = require('handlebars');
 const vision = require('vision');
 const inert = require('inert'); // serves static files
 const path = require('path');
+const routes = require('./routes');
 
 const server = Hapi.server({
   port: config.serverPort,
@@ -32,17 +33,7 @@ async function init () {
             layout: true, // avoids html piece repetitions
             layoutPath: 'views'
         })
-        // next two routes are related to inert: sets index, and serves all public folder statics so that getting the front.
-        server.route({
-            method: 'GET',
-            path: '/',
-            handler: (req, h) => {
-                return h.view('index',{
-                    title: 'Home'
-                })
-            }
-        });
-
+        // next two route are related to inert: sets index, and serves all public folder statics so that getting the front.
         server.route({
             method: 'GET',
             path: '/{param*}',
@@ -53,31 +44,8 @@ async function init () {
                 }
             }
         });
-        // Registration
-        server.route({
-            method: 'GET',
-            path: '/register',
-            handler: (req, h) => {
-                return h.view('register',{
-                    title: 'Register'
-                })
-            }
-        });
-        server.route({
-            method: 'POST',
-            path: '/create-user',
-            handler: (req, h) => {
-                console.log(req.payload)
-                return 'User created!'
-            }
-        });   
-        server.route({
-            method: 'GET',
-            path: '/i-want-to-see-madonna-live',
-            handler: (req, h) => {
-                return h.redirect('https://www.youtube.com/watch?v=Z26VOATBwhM')
-            }
-        });
+
+        server.route(routes);
 
         await server.start();
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --ext js,hbs", //Nodemon only listen js changes, but can be extended to other formats
+    "dev": "nodemon --ext js,hbs index.js", 
     "lint": "standard",
     "lint-fix": "standard --fix"
   },
