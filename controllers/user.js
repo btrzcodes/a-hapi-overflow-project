@@ -6,12 +6,21 @@ async function createUser (req, h) {
   let createdUser;
   try {
       createdUser = await users.create(req.payload)
-      return h.response('User created with ID '+ createdUser);
+      console.log(createdUser);
+    //   return h.response('User created with ID '+ createdUser);
+    return h.view('register', {
+        title: 'Register',
+        success: 'Wohooo! your user has succesfully been created'
+    })
 
   } catch (error) {
       console.error(error);
-      return h.response('Problems creating user')
-              .code(500)
+    //   return h.response('Problems creating user')
+    //           .code(500)
+    return h.view('register', {
+        title: 'Register',
+        error: 'Problems creating your user'
+    })
   }
 }
 
@@ -21,8 +30,12 @@ async function validateUser (req, h) {
       validatedUser = await users.validateUser(req.payload);
       
       if(!validatedUser){
-          return h.response('Invalid credentials to login')
-                  .code(401)
+        //   return h.response('Invalid credentials to login')
+        //           .code(401)
+        return h.view('login', {
+            title: 'Login',
+            error: 'Invalid credentials to login'
+        })
       }
 
       const { name, email } = validatedUser;
@@ -35,8 +48,12 @@ async function validateUser (req, h) {
               
   } catch (error) {
       console.error(error);
-      return h.response('Problems validating user')
-              .code(500)
+    //   return h.response('Problems validating user')
+    //           .code(500)
+    return h.view('login', {
+        title: 'Login',
+        error: 'There was a problem while login'
+    })
   }
 }
 

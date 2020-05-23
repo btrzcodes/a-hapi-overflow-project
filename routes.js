@@ -58,12 +58,17 @@ module.exports = [
         path: '/logout',
         handler: user.logout
     },
-
     { // special secret route:
         method: 'GET',
         path: '/i-want-to-see-madonna-live',
         handler: (req, h) => {
             return h.redirect('https://www.youtube.com/watch?v=Z26VOATBwhM')
         }
+    },
+    // 404 - Set this as the last one as a catch if do not find above the request
+    {
+        method: ['GET','POST'],
+        path: '/{any*}',
+        handler: site.notFound  
     }
 ]

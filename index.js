@@ -36,7 +36,7 @@ async function init () {
         // next two route are related to inert: sets index, and serves all public folder statics so that getting the front.
         server.route({
             method: 'GET',
-            path: '/{param*}',
+            path: '/assets/{param*}', // in order to avoid 404 wieth /params, we use assets
             handler: {
                 directory: {
                     path: '.', // this means 'public' as is setted above.

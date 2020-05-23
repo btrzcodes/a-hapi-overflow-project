@@ -28,8 +28,17 @@ function login(req, h) {
     })
 }
 
+function notFound(req, h) {
+    return h.view('404',
+        {}, // no parameter to pass, is like a null or empty object
+        {layout: 'error-layout'} // Vision propierty to change template
+    )
+    .code(404)
+}
+
 module.exports = {
     home,
     register,
-    login
+    login,
+    notFound
 }
