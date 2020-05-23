@@ -36,9 +36,23 @@ function notFound(req, h) {
     .code(404)
 }
 
+function fileNotFound(req, h) {
+    const response = req.response;
+    if(response.isBoom && response.output.statusCode === 404 ){  // intercepts boom managed error
+        return h.view('404',
+            {}, // no parameter to pass, is like a null or empty object
+            {layout: 'error-layout'} // Vision propierty to change template
+        )
+        .code(404)
+    }
+    // h.continue the h (hapi res) lifecycle if its not a 404 error
+    return h.continue;
+}
+
 module.exports = {
     home,
     register,
     login,
-    notFound
+    notFound,
+    fileNotFound
 }

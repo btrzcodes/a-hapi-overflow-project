@@ -58,8 +58,17 @@ async function validateUser (req, h) {
 }
 
 function failedValidation (req, h, err) {
-    Boom.badRequest('Validation failed', req.payload)
+  const templates = {
+    '/create-user': 'register',
+    '/validate-user': 'login'
+  }
 
+  return h.view(templates[req.path], { // acceses to the route that is given the error
+    title: 'Validation Error',
+    error: 'Please complete required files'
+  })
+  .code(400)
+  .takeover() // finalizes lifecycle of the request to return a view
 }
 
 function logout (req, h) {

@@ -6,6 +6,7 @@ const vision = require('vision');
 const inert = require('inert'); // serves static files
 const path = require('path');
 const routes = require('./routes');
+const site = require('./controllers/site');
 
 const server = Hapi.server({
   port: config.serverPort,
@@ -52,6 +53,8 @@ async function init () {
             encoding: 'base64json'
         })
 
+        // Before serves the routes, registers the h cylce interception:
+        server.ext('onPreResponse', site.fileNotFound) // listens a hook of the lifecylce. It tells it to analyze site controller
         server.route(routes);
 
         await server.start();
