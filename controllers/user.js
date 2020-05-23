@@ -1,5 +1,5 @@
 'use strict'
-
+const Boom = require('boom');
 const users = require('../models/index').users;
 
 async function createUser (req, h) {
@@ -40,6 +40,11 @@ async function validateUser (req, h) {
   }
 }
 
+function failedValidation (req, h, err) {
+    Boom.badRequest('Validation failed', req.payload)
+
+}
+
 function logout (req, h) {
     return h.redirect('/login')
             .unstate('user') // disables user cookie
@@ -48,5 +53,6 @@ function logout (req, h) {
 module.exports = {
     createUser,
     validateUser,
+    failedValidation,
     logout
 }

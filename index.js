@@ -64,4 +64,13 @@ async function init () {
     console.log(`Server happily running @ ${server.info.uri}`);
 }
 
+// Avoids unhandled rejection errors. Kind of catch all err
+process.on('unhandledRejection', error => {
+    console.error('UnhandledRejection', error.message, error);
+})
+process.on('UnhandledException', error => {
+    console.error('UnhandledException', error.message, error);
+})
+
+
 init();
