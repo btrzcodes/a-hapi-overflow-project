@@ -45,6 +45,13 @@ async function init () {
             }
         });
 
+        // auth cookies
+        server.state( 'user', { // the name of the cookie that will encrypt pass and email so that can auto auth
+            ttl: 1000 * 60 * 60 * 24 * 7, // 1 week
+            isSecure: config.env === 'production', // depends on the enviroment, dev no secure, prod secure.
+            encoding: 'base64json'
+        })
+
         server.route(routes);
 
         await server.start();

@@ -49,7 +49,13 @@ module.exports = [
         },
         path: '/validate-user',
         handler: user.validateUser
-    }, 
+    },
+    // LOGOUT
+    {
+        method: 'GET',
+        path: '/logout',
+        handler: user.logout
+    },
 
     { // special secret route:
         method: 'GET',

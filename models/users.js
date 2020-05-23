@@ -11,7 +11,6 @@ class Users {
     async create (data) {
         const userData = { ...data }; 
         // data needs to be destructured because new Hapi version decorates with null prototipe incompatible with Firebase...
-        // console.log(data);
         userData.password = await this.constructor.encrypt(userData.password); // constructor as it initializes the object in a class
 
         const newUser = this.collection.push(); // creates a new reference to this user collection
@@ -25,17 +24,20 @@ class Users {
                                         .orderByChild('email')
                                         .equalTo(data.email)
                                         .once('value') // TODO whant is this once() ?
-        console.log(userMailQuery); // TODO, CHECK WHAT FIREBASE RETURNS
+        
         const user = userMailQuery.val() // Firebase returns X, we set it as an object then
-        console.log(user); // TODO compare this with query
-
+        
         if(user){
             const userId = Object.keys(user)[0];
-            const validatePassword = await bcrypt
-                                                .compare(data.password, user[userId].password);
-            return validatePassword ?
-                userId
+            const validPassword = await bcrypt.compare(
+                                                    data.password, 
+                                                    user[userId].password
+                                                );
+            const verfiedUser = validPassword ?
+                user[userId] // Firebase object architecture.val() returns ID and, in sencond level, {name and email key values}... so the specific user is inside Id
                 : false
+
+            return verfiedUser;
         }
 
     }
